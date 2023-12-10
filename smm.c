@@ -228,5 +228,3 @@ int is_allowed_address(int pid, int addr)
     return 0;
 }
 
-    return 0;
-}
