@@ -38,15 +38,6 @@ int main(int argc, char *argv[])
             cycle_count = 1;
         }
         
-        // Check if there are any processes left in the ready queue
-        if (/* condition to check if ready queue is empty */) {
-            run = 0;
-        }
-        
-        // Count the number of holes created during the runtime of the OS
-        if (/* condition to check if a hole is created */) {
-            hole_count++;
-        }
     }
     
     // Print final memory contents
