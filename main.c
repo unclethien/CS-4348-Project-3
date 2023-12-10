@@ -48,9 +48,9 @@ int main(int argc, char *argv[])
     
     // Print the specified memory locations
     printf("Memory locations: { 30, 150, 230 }\n");
-    printf("Location 30: %d\n", /* value at location 30 */);
-    printf("Location 150: %d\n", /* value at location 150 */);
-    printf("Location 230: %d\n", /* value at location 230 */);
+    printf("Location 30: %d\n", /* value at location 30 */ memory[30]);
+    printf("Location 150: %d\n", /* value at location 150 */ memory[150]);
+    printf("Location 230: %d\n", /* value at location 230 */ memory[230]);
     
     return 0;
 }
