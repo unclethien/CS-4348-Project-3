@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "registers.h"
-#include "smm.h"
 
 #define MemorySize 1024
 #define WordSize 2

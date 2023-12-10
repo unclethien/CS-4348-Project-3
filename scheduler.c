@@ -108,28 +108,3 @@ int schedule(int cycle_num, int process_status) {
     }
     return 1;
 }
-void remove_process(int pid) {
-    struct Node* current = ready_queue;
-    struct Node* previous = NULL;
-
-    while (current != NULL) {
-        if (current->pcb.pid == pid) {
-            if (previous == NULL) {
-                ready_queue = current->next;
-            } else {
-                previous->next = current->next;
-            }
-            free(current);
-            break;
-        }
-        previous = current;
-        current = current->next;
-    }
-}
-
-int get_current_process_pid() {
-    if (ready_queue != NULL) {
-        return ready_queue->pcb.pid;
-    }
-    return -1;
-}

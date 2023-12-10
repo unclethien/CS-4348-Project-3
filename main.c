@@ -8,6 +8,7 @@ extern int clock_cycle();
 extern void mem_print();
 extern void mem_init();
 int schedule(int, int );
+int memory[1024];
 
 int main(int argc, char *argv[])
 {
