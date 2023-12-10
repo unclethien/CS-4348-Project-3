@@ -1,6 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct {
+    int pid;
+    int size;
+    int base_address;
+} AllocationEntry;
+
+typedef struct MemorySegment {
+    int base_address;
+    int size;
+    struct MemorySegment* next;
+} MemorySegment;
+
+MemorySegment* memory_holes = NULL;
+AllocationEntry allocation_table[100];
+int allocation_count = 0;
+
+int find_hole(int size);
+void add_hole(int base, int size);
+void remove_hole(int base);
+void merge_holes();
+
 int allocate(int pid, int size) 
 {
     int base_address = find_hole(size);
