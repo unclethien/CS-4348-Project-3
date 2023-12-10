@@ -13,27 +13,6 @@ struct register_struct context_switch(struct register_struct new_vals) {
     struct register_struct old_process = process;
     process = new_vals;
     return old_process;
-
-
-    // register_struct old_vals = {
-    //     .AC = registers[AC],
-    //     .IR0 = registers[IR0],
-    //     .IR1 = registers[IR1],
-    //     .MBR = registers[MBR],
-    //     .MAR = registers[MAR],
-    //     .PC = registers[PC],
-    //     .Base = registers[Base]
-    // };
-
-    // registers[AC] = new_vals.AC;
-    // registers[IR0] = new_vals.IR0;
-    // registers[IR1] = new_vals.IR1;
-    // registers[MBR] = new_vals.MBR;
-    // registers[MAR] = new_vals.MAR;
-    // registers[PC] = new_vals.PC;
-    // registers[Base] = new_vals.Base;
-
-    // return old_vals;
 }
 
 void fetch_instruction(int addr)
