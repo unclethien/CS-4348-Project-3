@@ -1,12 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int allocate(int pid, int size) {
+int allocate(int pid, int size) 
+{
     int base_address = find_hole(size);
 
-    if (base_address == -1) {
+    if (base_address == -1) 
+    {
         return 0;
-    } else {
+    } 
+    else 
+    {
         AllocationEntry entry;
         entry.pid = pid;
         entry.size = size;
@@ -19,8 +23,10 @@ int allocate(int pid, int size) {
 void deallocate(int pid) {
     int i;
 
-    for (i = 0; i < allocation_count; i++) {
-        if (allocation_table[i].pid == pid) {
+    for (i = 0; i < allocation_count; i++) 
+    {
+        if (allocation_table[i].pid == pid) 
+        {
             int base_address = allocation_table[i].base_address;
             int size = allocation_table[i].size;
 
@@ -32,9 +38,11 @@ void deallocate(int pid) {
     }
 }
 
-void add_hole(int base, int size) {
+void add_hole(int base, int size) 
+{
     MemorySegment* new_hole = (MemorySegment*)malloc(sizeof(MemorySegment));
-    if (new_hole == NULL) {
+    if (new_hole == NULL) 
+    {
         printf("Error: Could not allocate memory for new hole\n");
         exit(1);
     }
@@ -42,21 +50,27 @@ void add_hole(int base, int size) {
     new_hole->size = size;
     new_hole->next = NULL;
 
-    if (memory_holes == NULL) {
+    if (memory_holes == NULL) 
+    {
         memory_holes = new_hole;
-    } else {
+    } else 
+    {
         MemorySegment* current = memory_holes;
         MemorySegment* previous = NULL;
 
-        while (current != NULL && current->base_address < base) {
+        while (current != NULL && current->base_address < base) 
+        {
             previous = current;
             current = current->next;
         }
 
-        if (previous == NULL) {
+        if (previous == NULL) 
+        {
             new_hole->next = memory_holes;
             memory_holes = new_hole;
-        } else {
+        } 
+        else 
+        {
             previous->next = new_hole;
             new_hole->next = current;
         }
@@ -65,56 +79,70 @@ void add_hole(int base, int size) {
     merge_holes();
 }
 
-void remove_hole(int base) {
+void remove_hole(int base) 
+{
     MemorySegment* current = memory_holes;
     MemorySegment* previous = NULL;
 
-    while (current != NULL && current->base_address != base) {
+    while (current != NULL && current->base_address != base) 
+    {
         previous = current;
         current = current->next;
     }
 
-    if (current == NULL) {
+    if (current == NULL) 
+    {
         printf("Error: Hole not found\n");
         exit(1);
     }
 
-    if (previous == NULL) {
+    if (previous == NULL) 
+    {
         memory_holes = current->next;
-    } else {
+    } else 
+    {
         previous->next = current->next;
     }
 
     free(current);
 }
 
-void merge_holes() {
+void merge_holes() 
+{
     MemorySegment* current = memory_holes;
     MemorySegment* next = current->next;
 
-    while (next != NULL) {
-        if (current->base_address + current->size == next->base_address) {
+    while (next != NULL) 
+    {
+        if (current->base_address + current->size == next->base_address) 
+        {
             current->size += next->size;
             current->next = next->next;
             free(next);
             next = current->next;
-        } else {
+        } 
+        else 
+        {
             current = next;
             next = next->next;
         }
     }
 }
 
-int find_hole(int size) {
+int find_hole(int size) 
+{
     MemorySegment* current = memory_holes;
 
-    while (current != NULL) {
-        if (current->size >= size) {
+    while (current != NULL) 
+    {
+        if (current->size >= size) 
+        {
             int base_address = current->base_address;
             current->base_address += size;
             current->size -= size;
 
-            if (current->size == 0) {
+            if (current->size == 0) 
+            {
                 remove_hole(base_address);
             }
 
@@ -127,11 +155,14 @@ int find_hole(int size) {
     return -1;
 }
 
-int get_base_address(int pid) {
+int get_base_address(int pid) 
+{
     int i;
 
-    for (i = 0; i < allocation_count; i++) {
-        if (allocation_table[i].pid == pid) {
+    for (i = 0; i < allocation_count; i++) 
+    {
+        if (allocation_table[i].pid == pid) 
+        {
             return allocation_table[i].base_address;
         }
     }
@@ -139,11 +170,14 @@ int get_base_address(int pid) {
     return -1;
 }
 
-int find_empty_row() {
+int find_empty_row() 
+{
     int i;
 
-    for (i = 0; i < allocation_count; i++) {
-        if (allocation_table[i].size == 0) {
+    for (i = 0; i < allocation_count; i++) 
+    {
+        if (allocation_table[i].size == 0) 
+        {
             return i;
         }
     }
@@ -151,17 +185,23 @@ int find_empty_row() {
     return -1;
 }
 
-int is_allowed_address(int pid, int addr) {
+int is_allowed_address(int pid, int addr) 
+{
     int i;
 
-    for (i = 0; i < allocation_count; i++) {
-        if (allocation_table[i].pid == pid) {
+    for (i = 0; i < allocation_count; i++) 
+    {
+        if (allocation_table[i].pid == pid) 
+        {
             int base_address = allocation_table[i].base_address;
             int size = allocation_table[i].size;
 
-            if (addr >= base_address && addr < base_address + size) {
+            if (addr >= base_address && addr < base_address + size) 
+            {
                 return 1;
-            } else {
+            } 
+            else 
+            {
                 return 0;
             }
         }
