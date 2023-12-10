@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct {
+typedef struct AllocationEntry{
     int pid;
     int size;
     int base_address;
@@ -153,6 +153,7 @@ void merge_holes()
 int find_hole(int size) 
 {
     MemorySegment* current = memory_holes;
+    MemorySegment* next = current->next;
 
     while (current != NULL) 
     {
@@ -220,13 +221,12 @@ int is_allowed_address(int pid, int addr)
             if (addr >= base_address && addr < base_address + size) 
             {
                 return 1;
-            } 
-            else 
-            {
-                return 0;
             }
         }
     }
+
+    return 0;
+}
 
     return 0;
 }
