@@ -90,7 +90,9 @@ void load_prog(char *fname, int addr, int pid)
 
         if (instruct != NULL)
         {
+            
             mem_write(addr, instruct);
+            
             addr++;
             size++;
         }

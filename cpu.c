@@ -3,8 +3,8 @@
 
 extern int registers[7];
 
-extern int* mem_read(int);
-extern void mem_write(int, int*);
+extern int* mem_read(int, int);
+extern void mem_write(int, int);
 
 int data[2];
 
@@ -15,9 +15,9 @@ struct register_struct context_switch(struct register_struct new_vals) {
     return old_process;
 }
 
-void fetch_instruction(int addr, int pid)
+void fetch_instruction(int addr)
 {
-    int* instruct = mem_read(addr);
+    int* instruct = mem_read(addr, get_current_process_pid());
     process.registers[IR0] = instruct[0];
     process.registers[IR1] = instruct[1];
 }
@@ -46,7 +46,7 @@ void execute_instruction()
             process.registers[MAR] = process.registers[AC];
             break;
         case 6: //load_at_addr
-            process.registers[MBR] = mem_read(process.registers[MAR])[0];
+            process.registers[MBR] = mem_read(process.registers[MAR],get_current_process_pid())[0];
             break;
         case 7: //write_at_addr
             data[0] = 0;

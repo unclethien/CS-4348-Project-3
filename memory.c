@@ -26,7 +26,7 @@ int *mem_read(int addr, int pid)
     else 
     {
         deallocate(pid);
-        remove_process(pid)
+        remove_process(pid);
         return NULL;
     }
 }

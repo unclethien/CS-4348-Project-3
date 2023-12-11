@@ -21,6 +21,7 @@ void new_process(int base, int size, int pid)
     pcb.registers.registers[PC] = 0;
 
     process_table[current_process_index + 1] = pcb;
+    pcb.pid = pid;
     current_process_index++;
 
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));

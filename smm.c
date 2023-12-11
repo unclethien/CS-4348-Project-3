@@ -12,7 +12,8 @@ typedef struct MemorySegment
 
 MemorySegment* memory_holes = NULL;
 int allocation_table[256][3];
-int allocation_count = 0;
+int allocation_count = 256;
+
 
 
 
@@ -33,14 +34,14 @@ int allocate(int pid, int size)
     } 
     else 
     {
-        if (row == -1) 
-        {
-            allocation_count++;
-        }
-        else
-        {
-            row = allocation_count;
-        }
+        // if (row == -1) 
+        // {
+        //     allocation_count++;
+        // }
+        // else
+        // {
+        //     row = allocation_count;
+        // }
         allocation_table[row][0] = pid;
         allocation_table[row][1] = base_address;
         allocation_table[row][2] = size;
@@ -51,7 +52,7 @@ int allocate(int pid, int size)
 void deallocate(int pid) {
     int i;
 
-    for (i = 0; i < allocation_count; i++) 
+    for (i = 256; i < allocation_count; i++) 
     {
         if (allocation_table[i][0] == pid) 
         {
@@ -179,7 +180,7 @@ int find_hole(int size)
 
             if (current->size == 0) 
             {
-                remove_hole(base_address);
+                remove_hole(current->base_address);
             }
 
             return base_address;
@@ -195,7 +196,7 @@ int get_base_address(int pid)
 {
     int i;
 
-    for (i = 0; i < allocation_count; i++) 
+    for (i = 256; i < allocation_count; i++) 
     {
         if (allocation_table[i][0] == pid) 
         {
@@ -210,7 +211,7 @@ int find_empty_row()
 {
     int i;
 
-    for (i = 0; i < allocation_count; i++) 
+    for (i = 256; i < allocation_count; i++) 
     {
         if (allocation_table[i][2] == 0) 
         {
@@ -221,11 +222,11 @@ int find_empty_row()
     return -1;
 }
 
-int is_allowed_address(int pid, int addr) 
+int is_allowed_address(int addr, int pid)
 {
     int i;
 
-    for (i = 0; i < allocation_count; i++) 
+    for (i = 256; i < allocation_count; i++) 
     {
         if (allocation_table[i][0] == pid) 
         {
