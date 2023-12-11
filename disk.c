@@ -47,23 +47,25 @@ void load_programs(char fname[])
             continue;
         }
         
-        int addr;
+        int size;
         char prog_name[128];
-        sscanf(line, "%d %s", &addr, prog_name);
+        sscanf(line, "%d %s", &size, prog_name);
 
-        int base_addr = allocate(addr);
+        int base_addr = allocate(process_count, size);
+
         if (base_addr == -1)
         {
             printf("Error: Could not allocate memory for program %s\n", prog_name);
             continue;
         }
-        load_prog(prog_name, base_addr);
+        load_prog(prog_name, base_add, process_count);
+        process_count++;
 
     }
     fclose(fp);
 }
 
-void load_prog(char *fname, int addr)
+void load_prog(char *fname, int addr, int pid)
 {
     FILE *fp = fopen(fname, "r");
     if(fp == NULL)
@@ -92,7 +94,7 @@ void load_prog(char *fname, int addr)
             size++;
         }
     }
-    new_process(addr_init,size);
+    new_process(addr_init,size, pid);
     fclose(fp);
 }
 

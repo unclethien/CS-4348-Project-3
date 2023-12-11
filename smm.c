@@ -1,20 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct AllocationEntry{
-    int pid;
-    int size;
-    int base_address;
-} AllocationEntry;
 
-typedef struct MemorySegment {
+typedef struct MemorySegment 
+{
     int base_address;
     int size;
     struct MemorySegment* next;
 } MemorySegment;
 
+
 MemorySegment* memory_holes = NULL;
-AllocationEntry allocation_table[100];
+allocation_table[256,3];
 int allocation_count = 0;
 
 int find_hole(int size);
@@ -32,7 +29,6 @@ int allocate(int pid, int size)
     } 
     else 
     {
-        AllocationEntry entry;
         entry.pid = pid;
         entry.size = size;
         entry.base_address = base_address;
@@ -74,7 +70,8 @@ void add_hole(int base, int size)
     if (memory_holes == NULL) 
     {
         memory_holes = new_hole;
-    } else 
+    } 
+    else 
     {
         MemorySegment* current = memory_holes;
         MemorySegment* previous = NULL;
@@ -85,14 +82,14 @@ void add_hole(int base, int size)
             current = current->next;
         }
 
-        if (previous == NULL) 
+        if (previous == NULL)
         {
             new_hole->next = memory_holes;
             memory_holes = new_hole;
         } 
         else 
         {
-            previous->next = new_hole;
+            previous->next = new_hole; 
             new_hole->next = current;
         }
     }
@@ -152,6 +149,12 @@ void merge_holes()
 
 int find_hole(int size) 
 {
+    if (memory_holes == NULL) 
+    {
+        memory_holes = (MemorySegment*)malloc(sizeof(MemorySegment));
+        memory_holes -> size = 1024;
+    }
+    
     MemorySegment* current = memory_holes;
     MemorySegment* next = current->next;
 

@@ -11,7 +11,8 @@ struct PCB process_table[MAX_PROCESSES];
 int current_process_index = -1;
 extern struct register_struct context_switch(struct register_struct new_vals);
 
-void new_process(int base, int size) {
+void new_process(int base, int size, int pid) 
+{
     struct PCB pcb;
     pcb.pid = current_process_index + 1;
     pcb.size = size;
@@ -38,15 +39,21 @@ void new_process(int base, int size) {
     }
 }
 
-void remove_process(int pid) {
+void remove_process(int pid) 
+{
     struct Node* current = ready_queue;
     struct Node* previous = NULL;
 
     while (current != NULL) {
-        if (current->pcb.pid == pid) {
-            if (previous == NULL) {
+        if (current->pcb.pid == pid) 
+        {
+            if (previous == NULL)  // first node
+            {
                 ready_queue = current->next;
-            } else {
+                context_switch(ready_queue->pcb.registers)
+            } 
+            else 
+            {
                 previous->next = current->next;
             }
             free(current);
@@ -57,37 +64,48 @@ void remove_process(int pid) {
     }
 }
 
-int get_current_process_pid() {
-    if (ready_queue != NULL) {
+int get_current_process_pid() 
+{
+    if (ready_queue != NULL) 
+    {
         return ready_queue->pcb.pid;
     }
     return -1;
 }
 
-void next_process() {
+void next_process() 
+{
     struct Node* current = ready_queue;
     ready_queue = ready_queue->next;
     current->next = NULL;
-    if (ready_queue == NULL) {
+    if (ready_queue == NULL) 
+    {
         ready_queue = current;
-    } else {
+    } 
+    else 
+    {
         struct Node* temp = ready_queue;
-        while (temp->next != NULL) {
+        while (temp->next != NULL) 
+        {
             temp = temp->next;
         }
         temp->next = current;
     }
 }
 
-int schedule(int cycle_num, int process_status) {
-    if (ready_queue == NULL) { 
+int schedule(int cycle_num, int process_status) 
+{
+    if (ready_queue == NULL) 
+    { 
         return 0;
     }
-    if (cycle_num == 10) {
+    if (cycle_num == 10) 
+    {
         next_process();
 
         struct Node* temp = ready_queue;
-        while (temp->next != NULL) {
+        while (temp->next != NULL) 
+        {
             temp = temp->next;
         }
 
@@ -96,11 +114,13 @@ int schedule(int cycle_num, int process_status) {
 
     if (process_status == 0) {
         struct Node* current = ready_queue;
-        if (current->next == NULL) {
+        if (current->next == NULL) 
+        {
             // free(ready_queue);
             return 0;
         }
-        else{
+        else
+        {
             ready_queue = ready_queue->next;
             // free(current);
             context_switch(ready_queue->pcb.registers); 
