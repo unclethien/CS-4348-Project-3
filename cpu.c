@@ -15,7 +15,7 @@ struct register_struct context_switch(struct register_struct new_vals) {
     return old_process;
 }
 
-void fetch_instruction(int addr)
+void fetch_instruction(int addr, int pid)
 {
     int* instruct = mem_read(addr);
     process.registers[IR0] = instruct[0];
