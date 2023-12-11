@@ -50,7 +50,7 @@ void remove_process(int pid)
             if (previous == NULL)  // first node
             {
                 ready_queue = current->next;
-                context_switch(ready_queue->pcb.registers)
+                context_switch(ready_queue->pcb.registers);
             } 
             else 
             {

@@ -6,7 +6,8 @@
 
 //Memory function
 extern void mem_write(int, int*);
-extern void new_process(int, int);
+extern void new_process(int, int, int);
+extern int allocate(int, int);
 
 int process_count = 0;
 
@@ -16,7 +17,7 @@ int queue_count = 0;
 
 //Load the program with the name fname, translate it into integer OP Codes, and then store it in memory at address addr
 int* translate(char*);
-void load_prog(char *, int );
+void load_prog(char *fname, int pid, int addr);
 
 void trim_newline(char* line)
 {
@@ -58,7 +59,7 @@ void load_programs(char fname[])
             printf("Error: Could not allocate memory for program %s\n", prog_name);
             continue;
         }
-        load_prog(prog_name, base_add, process_count);
+        load_prog(prog_name, base_addr, process_count);
         process_count++;
 
     }
@@ -94,7 +95,7 @@ void load_prog(char *fname, int addr, int pid)
             size++;
         }
     }
-    new_process(addr_init,size, pid);
+    new_process(addr_init, size, pid);
     fclose(fp);
 }
 

@@ -7,16 +7,9 @@
 
 int memory[MemorySize][WordSize];
 
-int is_allowed_address(int addr, int pid) {
-    // Implementation of is_allowed_address() function
-    // Check if the address is allowed for the given process
-    // Return 1 if allowed, 0 otherwise
-}
-
-void deallocate(int pid) {
-    // Implementation of deallocate() function
-    // Deallocate the process with the given PID
-}
+extern void deallocate(int);
+extern int is_allowed_address(int, int);
+extern void remove_process(int);
 
 int *mem_read(int addr, int pid) 
 {
@@ -26,10 +19,14 @@ int *mem_read(int addr, int pid)
         return NULL;
     }
 
-    if (is_allowed_address(addr, pid)) {
+    if (is_allowed_address(addr, pid)) 
+    {
         return memory[addr];
-    } else {
+    } 
+    else 
+    {
         deallocate(pid);
+        remove_process(pid)
         return NULL;
     }
 }
