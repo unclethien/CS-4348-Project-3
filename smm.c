@@ -16,7 +16,6 @@ int allocation_count = 256;
 
 
 
-
 int find_hole(int size);
 void add_hole(int base, int size);
 void remove_hole(int base);
@@ -27,32 +26,25 @@ int allocate(int pid, int size)
 {
     int base_address = find_hole(size);
     int row = find_empty_row();
-
+    
     if (base_address == -1) 
     {
         return 0;
     } 
     else 
     {
-        // if (row == -1) 
-        // {
-        //     allocation_count++;
-        // }
-        // else
-        // {
-        //     row = allocation_count;
-        // }
         allocation_table[row][0] = pid;
         allocation_table[row][1] = base_address;
         allocation_table[row][2] = size;
-        return 1;
+       
+        return base_address;
     }
 }
 
 void deallocate(int pid) {
     int i;
 
-    for (i = 256; i < allocation_count; i++) 
+    for (i = 0; i < allocation_count; i++) 
     {
         if (allocation_table[i][0] == pid) 
         {
@@ -161,11 +153,13 @@ void merge_holes()
 
 int find_hole(int size) 
 {
-    if (memory_holes == NULL) 
-    {
+    if (memory_holes == NULL) {
         memory_holes = (MemorySegment*)malloc(sizeof(MemorySegment));
-        memory_holes -> size = 1024;
+        memory_holes->size = 1024;
+        memory_holes->base_address = 0;
+        memory_holes->next = NULL;
     }
+
 
     MemorySegment* current = memory_holes;
     MemorySegment* next = current->next;
@@ -178,16 +172,18 @@ int find_hole(int size)
             current->base_address += size;
             current->size -= size;
 
+
             if (current->size == 0) 
             {
-                remove_hole(current->base_address);
+                remove_hole(base_address);
             }
-
             return base_address;
         }
 
         current = current->next;
     }
+    
+
 
     return -1;
 }
@@ -196,7 +192,7 @@ int get_base_address(int pid)
 {
     int i;
 
-    for (i = 256; i < allocation_count; i++) 
+    for (i = 0; i < allocation_count; i++) 
     {
         if (allocation_table[i][0] == pid) 
         {
@@ -211,7 +207,7 @@ int find_empty_row()
 {
     int i;
 
-    for (i = 256; i < allocation_count; i++) 
+    for(i = 0; i < allocation_count; i++) 
     {
         if (allocation_table[i][2] == 0) 
         {
@@ -222,16 +218,17 @@ int find_empty_row()
     return -1;
 }
 
-int is_allowed_address(int addr, int pid)
+int is_allowed_address(int pid, int addr) 
 {
     int i;
 
-    for (i = 256; i < allocation_count; i++) 
+    for (i = 0; i < allocation_count; i++) 
     {
         if (allocation_table[i][0] == pid) 
         {
             int base_address = allocation_table[i][1];
             int size = allocation_table[i][2];
+            
 
             if (addr >= base_address && addr < base_address + size) 
             {

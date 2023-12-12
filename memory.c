@@ -19,7 +19,7 @@ int *mem_read(int addr, int pid)
         return NULL;
     }
 
-    if (is_allowed_address(addr, pid)) 
+    if (is_allowed_address(pid, addr)) 
     {
         return memory[addr];
     } 
@@ -31,7 +31,7 @@ int *mem_read(int addr, int pid)
     }
 }
 
-void mem_write(int addr, int* data, int pid) 
+void mem_write(int addr, int firstData, int secondData, int pid) 
 {
     if(addr < 0 || addr > MemorySize) 
     {
@@ -39,9 +39,9 @@ void mem_write(int addr, int* data, int pid)
         return;
     }
 
-    if (is_allowed_address(addr, pid)) {
-        memory[addr][0] = data[0];
-        memory[addr][1] = data[1];
+    if (is_allowed_address(pid, addr)) {
+        memory[addr][0] = firstData;
+        memory[addr][1] = secondData;
     } else {
         deallocate(pid);
     }
@@ -67,11 +67,10 @@ void mem_load(char* fname)
 }
 void mem_print()
 {
-    int i;
-    for(i=0; i<20; i++)
-    {
-        printf("Addr: %d, Data: %d %d\n", i, memory[i][0], memory[i][1]); 
-    }
+    printf("Addr: %d, Data: %d %d\n", 30, memory[30][0], memory[30][1]); 
+    printf("Addr: %d, Data: %d %d\n", 150, memory[150][0], memory[150][1]); 
+    printf("Addr: %d, Data: %d %d\n", 230, memory[230][0], memory[230][1]); 
+
 }
 
 void mem_init()

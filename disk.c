@@ -5,7 +5,7 @@
 #include "registers.h"
 
 //Memory function
-extern void mem_write(int, int*);
+extern void mem_write(int, int, int, int);
 extern void new_process(int, int, int);
 extern int allocate(int, int);
 
@@ -17,7 +17,7 @@ int queue_count = 0;
 
 //Load the program with the name fname, translate it into integer OP Codes, and then store it in memory at address addr
 int* translate(char*);
-void load_prog(char *fname, int pid, int addr);
+void load_prog(char *fname, int pid, int addr, int size);
 
 void trim_newline(char* line)
 {
@@ -51,7 +51,6 @@ void load_programs(char fname[])
         int size;
         char prog_name[128];
         sscanf(line, "%d %s", &size, prog_name);
-
         int base_addr = allocate(process_count, size);
 
         if (base_addr == -1)
@@ -59,14 +58,15 @@ void load_programs(char fname[])
             printf("Error: Could not allocate memory for program %s\n", prog_name);
             continue;
         }
-        load_prog(prog_name, base_addr, process_count);
+        load_prog(prog_name, base_addr, process_count, size);
         process_count++;
+
 
     }
     fclose(fp);
 }
 
-void load_prog(char *fname, int addr, int pid)
+void load_prog(char *fname, int addr, int pid, int size)
 {
     FILE *fp = fopen(fname, "r");
     if(fp == NULL)
@@ -75,7 +75,6 @@ void load_prog(char *fname, int addr, int pid)
         return;
     }
     char line[128];
-    int size = 0;
     int addr_init = addr;
     while (fgets(line, 128, fp) != NULL)
     {
@@ -87,14 +86,13 @@ void load_prog(char *fname, int addr, int pid)
         }
         
         int* instruct = translate(line);
-
+        
         if (instruct != NULL)
         {
-            
-            mem_write(addr, instruct);
-            
+            int firstData = instruct[0];
+            int secondData = instruct[1];
+            mem_write(addr, firstData, secondData, pid);
             addr++;
-            size++;
         }
     }
     new_process(addr_init, size, pid);

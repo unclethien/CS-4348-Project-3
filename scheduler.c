@@ -14,15 +14,13 @@ extern struct register_struct context_switch(struct register_struct new_vals);
 void new_process(int base, int size, int pid) 
 {
     struct PCB pcb;
-    pcb.pid = current_process_index + 1;
+    pcb.pid = pid;
     pcb.size = size;
     pcb.base = base;
     pcb.registers.registers[Base] = base;
     pcb.registers.registers[PC] = 0;
 
-    process_table[current_process_index + 1] = pcb;
-    pcb.pid = pid;
-    current_process_index++;
+    process_table[pid] = pcb;
 
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
     new_node->pcb = pcb;
@@ -67,6 +65,11 @@ void remove_process(int pid)
 
 int get_current_process_pid() 
 {
+    struct Node* current = ready_queue;
+    while(current){
+        current = current->next;
+    }
+    printf("\n");
     if (ready_queue != NULL) 
     {
         return ready_queue->pcb.pid;
