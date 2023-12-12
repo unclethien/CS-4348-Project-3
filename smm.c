@@ -13,7 +13,7 @@ typedef struct MemorySegment
 MemorySegment* memory_holes = NULL;
 int allocation_table[256][3];
 int allocation_count = 256;
-
+int hole_count = 0;
 
 
 int find_hole(int size);
@@ -100,6 +100,7 @@ void add_hole(int base, int size)
     }
 
     merge_holes();
+    hole_count++;
 }
 
 void remove_hole(int base) 
@@ -128,6 +129,7 @@ void remove_hole(int base)
     }
 
     free(current);
+    hole_count--;
 }
 
 void merge_holes() 
