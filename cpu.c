@@ -20,7 +20,7 @@ struct register_struct context_switch(struct register_struct new_vals) {
 
 void fetch_instruction(int addr)
 {
-    int* instruct = mem_read(get_current_process_pid(),addr);
+    int* instruct = mem_read(addr, get_current_process_pid());
     process.registers[IR0] = instruct[0]; 
     process.registers[IR1] = instruct[1];
 }
@@ -109,6 +109,7 @@ int clock_cycle()
     fetch_instruction(mem_address(process.registers[PC]));
     execute_instruction();
     process.registers[PC]++;
+    
     
     if(process.registers[IR0]==0)
     {
