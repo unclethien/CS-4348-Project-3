@@ -66,10 +66,6 @@ void remove_process(int pid)
 int get_current_process_pid() 
 {
     struct Node* current = ready_queue;
-    while(current){
-        current = current->next;
-    }
-    printf("\n");
     if (ready_queue != NULL) 
     {
         return ready_queue->pcb.pid;

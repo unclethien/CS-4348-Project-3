@@ -31,11 +31,9 @@ int main(int argc, char *argv[])
     int cycle_count = 0;
     int run = 1;
     int hole_count = 0; // Variable to count the number of holes created
-    mem_print();
     
     while(schedule(cycle_count, clock_cycle()) && run)
     {
-        printf("%d\n", get_current_process_pid());
         cycle_count++;
         
         if(cycle_count > 10){
@@ -49,12 +47,6 @@ int main(int argc, char *argv[])
     
     // Print the number of holes created
     printf("Number of holes created: %d\n", hole_count);
-    
-    // Print the specified memory locations
-    printf("Memory locations: { 30, 150, 230 }\n");
-    // printf("Location 30: %d\n", /* value at location 30 */ memory[30]);
-    // printf("Location 150: %d\n", /* value at location 150 */ memory[150]);
-    // printf("Location 230: %d\n", /* value at location 230 */ memory[230]);
     
     return 0;
 }

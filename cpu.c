@@ -4,7 +4,7 @@
 extern int registers[7];
 
 extern int* mem_read(int, int);
-extern void mem_write(int, int*, int);
+extern void mem_write(int, int, int, int);
 
 extern int get_current_process_pid();
 
@@ -54,7 +54,7 @@ void execute_instruction()
         case 7: //write_at_addr
             data[0] = 0;
             data[1] = process.registers[MBR];
-            mem_write(process.registers[MAR], data, get_current_process_pid());
+            mem_write(process.registers[MAR], data[0], data[1], get_current_process_pid());
             break;
         case 8: //add
             process.registers[AC] += process.registers[MBR];

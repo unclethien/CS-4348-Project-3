@@ -44,19 +44,20 @@ int allocate(int pid, int size)
 void deallocate(int pid) {
     int i;
 
+    MemorySegment* current = memory_holes;
+
     for (i = 0; i < allocation_count; i++) 
     {
         if (allocation_table[i][0] == pid) 
         {
             int base_address = allocation_table[i][1];
             int size = allocation_table[i][2];
-
             add_hole(base_address, size);
-            allocation_table[i][2] = 0;
-
+            allocation_table[i][2] = 0;        
             break;
         }
     }
+    
 }
 
 void add_hole(int base, int size) 
